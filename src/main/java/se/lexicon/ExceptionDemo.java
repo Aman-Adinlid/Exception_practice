@@ -1,5 +1,7 @@
 package se.lexicon;
 
+import se.lexicon.Exception.FileFormatException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,12 +12,17 @@ public class ExceptionDemo {
 
 
     public static void main(String[] args) {
-        try {
+       /* try {
             readFile("C:\\Users\\deltagare\\Downloads\\workshop-exception\\untitled\\Exception_practice\\PresentMe.txt");
         } catch (IOException e) {
             System.out.println("IOException: " + e.getMessage());
-        }
+        }*/
+
+        // readFileNew();
+        // getNumber();
+        readFileWithTrtResources();
     }
+
 
     public static void ex1() {
 
@@ -31,7 +38,8 @@ public class ExceptionDemo {
             }
         }
     }
-    public static void ex2(){
+
+    public static void ex2() {
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -45,38 +53,96 @@ public class ExceptionDemo {
             }
         }
     }
-    public static void ex3(){
-        int[] numbers = {1,2,3,4,5,6,7};
+
+    public static void ex3() {
+        int[] numbers = {1, 2, 3, 4, 5, 6, 7};
         try {
-            System.out.println( numbers[7]);
-        }catch (IndexOutOfBoundsException e){
+            System.out.println(numbers[7]);
+        } catch (IndexOutOfBoundsException e) {
             e.getStackTrace();
         }
 
     }
-    public static void ex4(){
+
+    public static void ex4() {
         String fileName = "C:\\Users\\deltagare\\Downloads\\workshop-exception\\untitled\\Exception_practice\\PresentMe.txt";
-        File file=new File(fileName);
+        File file = new File(fileName);
         try {
             FileInputStream inputStream = new FileInputStream(file);
             inputStream.read();
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.getStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public static void readFile(String fileName) throws IOException{
-        if (fileName.contains(".txt")){
-            throw new IllegalArgumentException("Is not valid");
+
+    public static void readFile(String fileName) throws IOException {
+        if (fileName.contains(".txt")) {
+            throw new FileFormatException("Is not valid");
         }
         File file = new File(fileName);
         FileInputStream inputStream = new FileInputStream(file);
-        int x= 0;
-        while(!((x = inputStream.read()) !=-1)){
+        int x = 0;
+        while (!((x = inputStream.read()) != -1)) {
             System.out.println((char) x);
 
 
+        }
+    }
+
+    public static void readFileNew() {
+
+        File file = new File("C:\\Users\\deltagare\\Downloads\\workshop-exception\\untitled\\Exception_practice\\PresentMe.txt");
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file);
+            int x = 0;
+            while ((x = inputStream.read()) != -1) {
+                System.out.print((char) x);
+            }
+            System.out.println("\n\n");
+        } catch (IOException e) {
+            System.out.println("IOError: " + e.getMessage());
+        } finally {
+            try {
+                if (inputStream != null) inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("#### finally block #### ");
+        }
+    }
+
+    public static int getNumber() {
+        Scanner scanner = new Scanner(System.in);
+        int num = 0;
+        int result = 0;
+        try {
+            System.out.println("Enter a number:  ");
+            num = scanner.nextInt();
+            result = num * 2;
+            System.out.println("number = " + result);
+        } catch (Exception e) {
+            e.getStackTrace();
+        } finally {
+            scanner.close();
+            result = 0;
+        }
+        return num;
+    }
+
+    public static void readFileWithTrtResources() {
+        File file = new File("C:\\Users\\deltagare\\Downloads\\workshop-exception\\untitled\\Exception_practice\\PresentMe.txt");
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            int x = 0;
+            while ((x = inputStream.read()) != -1) {
+                System.out.print((char) x);
+            }
+            System.out.println("\n\n");
+        } catch (IOException e) {
+            System.out.println("IOError: " + e.getMessage());
         }
     }
 }
